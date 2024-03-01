@@ -1,16 +1,10 @@
-const words = ["bee","imprison","sky","current","ship","oven","sort","eat","marvelous","rub","shiny","grubby","chilly","dynamic","fizz","journey","boil","slip","uncovered","manage","sweep","chip","sash","drill","note"];
 
+const url = "https://random-word-api.herokuapp.com/word?number=30&length=5";
+const test = () => fetch(url).then(response => response.json()).catch(error => console.error('Error:', error));
 
-document.addEventListener("DOMContentLoaded", () => {
-    
-    const input = document.getElementById("input");
-    const text = document.getElementById("word");
-    
-    input.addEventListener("input", () => {
-    
-        text.textContent = input.value;
-    
-    })
+document.addEventListener("DOMContentLoaded", async () => {
+
+    const words = await test();
 
     const root = document.getElementById("words-container");
     let newSpan;
@@ -23,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
-    
 });
 
 
