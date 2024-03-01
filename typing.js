@@ -55,10 +55,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (`${e.code}` === "Backspace" && input.value === " ") {
       e.preventDefault(); // Prevent the user from backspacing when the input is empty (input defaulted to " ")
     }
-
-    if (input.value === ""){
-      e.preventDefault(); // Prevent the user from typing a space when the input is empty (input defaulted to " ")
-    }
     
     if (`${e.code}` === "Space") {
       const inputValue = input.value.substr(1, input.value.length -1);
@@ -81,4 +77,4 @@ document.addEventListener("DOMContentLoaded", async () => {
       input.disabled = true;
     }
   });
-});
+});dfgfd
