@@ -108,3 +108,9 @@ section {
   border-radius: 2px;
 }
 
+.valid {
+  color: rgb(97, 176, 97);
+}
+.fail {
+  color: rgb(199, 68, 68);
+}

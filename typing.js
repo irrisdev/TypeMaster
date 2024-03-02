@@ -11,6 +11,7 @@ let incorrectCounter = 0;
 let correctCounter = 0;
 let counter = 0;
 let removeIndex = 0;
+let wordInx = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -32,12 +33,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   input = document.getElementById("input");
   input.value = null;
-  currentWord = document.getElementById("word-" + removeIndex).textContent;
-  input.addEventListener("keydown", keyInput);
+  currentWord = document.getElementById("word-" + wordInx).textContent;
+  input.addEventListener("keydown", keyboardEvent);
 
 });
 
-const removeSpan = () => document.getElementById("word-" + removeIndex).remove();
+const removeSpan = () => document.getElementById("word-" + removeIndex).classList.add("valid");
 
 const displayOverlay = (value) => value == true ? overlay.classList.replace("hidden", "visible") : overlay.classList.replace("visible", "hidden");
 
@@ -115,38 +116,41 @@ function updateAccuracy() {
   }
 }
 
-
 const regex = /^[A-Za-z]$/;
-let letterCount = 0;
-let keyData;
 const allowedKeys = ["Backspace", " "];
+let keyValue;
+let letters = 0;
+let word2type;
 
-function keyInput(e){
+function keyboardEvent(e) {
 
-    keyData = `${e.key}`;
-    console.log("Word len: ", currentWord.length)
-    if (!allowedKeys.includes(keyData) && !regex.test(keyData) || (keyCode === "Backspace" && input.value === " ")){
-        e.preventDefault();
-        return;
-    } else if(keyData == " " && letterCount < currentWord.length){
-        e.preventDefault();
-        return;
-    }
+  keyValue = `${e.key}`;
+  if ((keyValue == "Backspace" && input.value != " ") || (keyValue == " " && letters > 0) || regex.test(keyValue)) {
+    word2type = document.getElementById("word-" + wordInx);
     
-    if (regex.test(keyData)){
-        letterCount++;
-    } else if (keyData == "Backspace" && letterCount > 0){
-        letterCount--;
-    } 
-    console.log("Input len: " ,letterCount);
-    if (keyData == " " && letterCount >= currentWord.length){
-
-        currentWord = document.getElementById("word-" + removeIndex).textContent;
-        removeSpan(); // Remove word that has been typed
-        removeIndex++;
-        input.value = "";
-        letterCount = 0;
+    if (keyValue == " " && letters > 0) {
+      
+      console.log("To type: ", word2type.textContent, " Typed: ", input.value);
+      console.log(word2type.textContent == input.value)
+      let valid = input.value.replace(" ", "") == word2type.textContent ? "valid" : "fail";
+      word2type.classList.add(valid);
+      letters = 0;
+      wordInx++;
+      input.value = "";
 
     }
+
+    else if (keyValue == "Backspace" && letters >= 0) {
+      letters--;
+    }
+
+    else if (regex.test(keyValue)) {
+      letters++;
+    }
+
+  } 
+  else {
+    e.preventDefault();
+  }
 
 }
