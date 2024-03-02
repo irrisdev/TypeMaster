@@ -53,16 +53,37 @@ section {
   width: 100%;
 }
 
+.timeconfig{
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+.timeconfig p{
+  padding-left: 0.5em;
+
+}
+#stats{
+  display: flex;
+}
+.timeconfig #time{
+  margin: 0;
+}
+
 #words-container {
-  line-height: 1.5;
+  line-height: 1.4em;
   background-color: #222222;
   border-radius: 4px;
   padding: 10px;
-  height: 6.5em;
+  height: 6em;
   font-family: "Inter", sans-serif;
   overflow: hidden;
 }
 
+@media only screen and (max-width: 600px) {
+  #words-container {
+    height: 4.5em;
+  }
+}
 
 #words-container span {
   display: inline-block;
@@ -97,21 +118,6 @@ section {
 
 #input:focus {
   border-color: #4c6dff;
-}
-
-#stats {
-  display: flex;
-  width: 100%;
-  justify-content: space-around;
-}
-
-#stats p {
-  padding: 5px;
-  text-align: center;
-  margin: 0 3px 0 3px;
-  border: 1px solid #f8f8f8;                       
-  width: 100%;               
-  border-radius: 2px;
 }
 
 .valid {

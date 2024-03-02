@@ -75,6 +75,14 @@ const startTimer = async () => {
 
   }
   input.disabled = true;
+  let textOverlay = document.getElementById("overlay-text");
+  textOverlay.remove();
+  let reloadButton = document.createElement("button");
+  reloadButton.type = "button";
+  reloadButton.textContent = "click to restart";
+  reloadButton.onclick = () => location.reload() ;
+  overlay.append(reloadButton);
+  displayOverlay(true);
 
 };
 
@@ -84,8 +92,6 @@ const incrementWord = () => {
   word2type = document.getElementById("word-" + wordInx);
   
 } 
- 
-
 
 const regex = /^[A-Za-z]$/;
 const allowedKeys = ["Backspace", " "];
