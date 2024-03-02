@@ -6,11 +6,8 @@ const words = [
     "grape", "melon", "lemon", "juice", "bread", "toast", "snack", "candy",
     "dream", "smile", "laugh", "happy", "sleep", "night", "stars", "party"
 ];
-let wordsTop, wordsWidth, wordsHeight, offsets, overlay, newSpan, input, root, inputLen, currentWord, keyCode;
-let incorrectCounter = 0;
-let correctCounter = 0;
+let wordsTop, wordsWidth, wordsHeight, offsets, overlay, newSpan, input, root;
 let counter = 0;
-let removeIndex = 0;
 let wordInx = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -33,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   input = document.getElementById("input");
   input.value = null;
-  currentWord = document.getElementById("word-" + wordInx).textContent;
   input.addEventListener("keydown", keyboardEvent);
   
 
@@ -57,80 +53,27 @@ function changeOverlay() {
   overlay.style.top = wordsTop + "px";
 }
 
-function updateWPM() {
-  const currentTime = new Date().getTime();
-  const elapsedMilliseconds = currentTime - startTime;
-  const elapsedSeconds = elapsedMilliseconds / 1000;
-  const typedAmount = parseInt(removeIndex + 1);
-  const wpm = Math.round((typedAmount / elapsedSeconds) * 60);
-  const wpmElement = document.getElementById("wp");
-  wpmElement.textContent = wpm;
-}
-
-
-function keyDownEvent(e) {
-
-  keyCode = `${e.code}`;
-
-  if (incorrectCounter === 0 && correctCounter == 0) {
-    startTime = new Date().getTime(); // Start timer
-  }
-
-  if (keyCode === "Backspace" && input.value === " ") {
-    e.preventDefault(); // Prevent the user from backspacing when the input is empty (input defaulted to " ")
-  }
-
-
-
-  inputLen = input.value.length;
-  console.log(inputLen);
-  if (currentWord[inputLen-1] == keyCode){
-
-    updateAccuracy();
-    updateWPM();
-
-  }
-
-  if (keyCode === "Space" && inputLen >= currentWord.length) {
-    currentWord = document.getElementById("word-" + removeIndex).textContent;
-    removeSpan(); // Remove word that has been typed
-    removeIndex++;
-    input.value = "";
-
-  }
-
-  if (removeIndex === words.length) {
-    // After all words are typed
-    input.disabled = true;
-  }
-}
-
-function updateAccuracy() {
-  const accuracy = document.getElementById("ac");
-  if (incorrectCounter === 0) {
-    // Preserve accuracy at 100% if no incorrect words
-    accuracy.textContent = "100";
-  } else if (correctCounter === 0) {
-    // Preserve accuracy at 0% if no correct words
-    accuracy.textContent = "0";
-  } else {
-    const accuracyValue = Math.round(
-      (correctCounter / (correctCounter + incorrectCounter)) * 100
-    );
-    accuracy.textContent = accuracyValue;
-  }
-}
-
+let wordsTyped = 0;
 let timeElapsed = 30;
+let wordsPerMin = 0;
+let wordAccuracy = 100;
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
+//Updates WPM and Accuracy every second
 const startTimer = async () => {
+  
   while (timeElapsed > 0){
 
     await sleep(1000);
     timeElapsed--;
-    console.log(timeElapsed);
+    wordsPerMin = Math.round((wordsTyped / ( 30 - timeElapsed)) * 60)
     document.getElementById("tm").textContent = timeElapsed;
+    document.getElementById("wp").textContent = wordsPerMin;
+
+    wordAccuracy = Math.round(wordsTyped / wordInx * 100);
+    document.getElementById("ac").textContent = wordAccuracy;
+
+
   }
   input.disabled = true;
 
@@ -160,6 +103,7 @@ function keyboardEvent(e) {
       letters = 0;
       wordInx++;
       showCurrent();
+      if (valid == "valid") wordsTyped++;
       input.value = "";
 
     }
