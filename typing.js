@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     counter++;
   }
 
+  word2type = document.getElementById("word-" + wordInx);
   input = document.getElementById("input");
   input.value = null;
   input.addEventListener("keydown", keyboardEvent);
@@ -35,8 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 const showCurrent = () => document.getElementById("word-" + wordInx).classList.add("current");
-
-const removeSpan = () => document.getElementById("word-" + removeIndex).classList.add("valid");
 
 const displayOverlay = (value) => {
   changeOverlay();
@@ -78,6 +77,16 @@ const startTimer = async () => {
   input.disabled = true;
 
 };
+
+
+const incrementWord = () => {
+  wordInx++;
+  word2type = document.getElementById("word-" + wordInx);
+  
+} 
+ 
+
+
 const regex = /^[A-Za-z]$/;
 const allowedKeys = ["Backspace", " "];
 let keyValue;
@@ -89,7 +98,6 @@ function keyboardEvent(e) {
 
   keyValue = `${e.key}`;
   if ((keyValue == "Backspace" && input.value != " ") || (keyValue == " " && letters > 0) || regex.test(keyValue)) {
-    word2type = document.getElementById("word-" + wordInx);
 
     if (firstWord){
       startTimer();
@@ -101,7 +109,7 @@ function keyboardEvent(e) {
       let valid = input.value.replace(" ", "") == word2type.textContent ? "valid" : "fail";
       word2type.classList.replace("current", valid);
       letters = 0;
-      wordInx++;
+      incrementWord();
       showCurrent();
       if (valid == "valid") wordsTyped++;
       input.value = "";
