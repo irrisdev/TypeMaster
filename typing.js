@@ -35,12 +35,17 @@ document.addEventListener("DOMContentLoaded", () => {
   input.value = null;
   currentWord = document.getElementById("word-" + wordInx).textContent;
   input.addEventListener("keydown", keyboardEvent);
+  
 
 });
+const showCurrent = () => document.getElementById("word-" + wordInx).classList.add("current");
 
 const removeSpan = () => document.getElementById("word-" + removeIndex).classList.add("valid");
 
-const displayOverlay = (value) => value == true ? overlay.classList.replace("hidden", "visible") : overlay.classList.replace("visible", "hidden");
+const displayOverlay = (value) => {
+  changeOverlay();
+  value == true ? overlay.classList.replace("hidden", "visible") : overlay.classList.replace("visible", "hidden");
+} 
 
 function changeOverlay() {
   wordsTop = offsets.top;
@@ -116,26 +121,45 @@ function updateAccuracy() {
   }
 }
 
+let timeElapsed = 30;
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+const startTimer = async () => {
+  while (timeElapsed > 0){
+
+    await sleep(1000);
+    timeElapsed--;
+    console.log(timeElapsed);
+    document.getElementById("tm").textContent = timeElapsed;
+  }
+  input.disabled = true;
+
+};
 const regex = /^[A-Za-z]$/;
 const allowedKeys = ["Backspace", " "];
 let keyValue;
 let letters = 0;
 let word2type;
+let firstWord = true;
 
 function keyboardEvent(e) {
 
   keyValue = `${e.key}`;
   if ((keyValue == "Backspace" && input.value != " ") || (keyValue == " " && letters > 0) || regex.test(keyValue)) {
     word2type = document.getElementById("word-" + wordInx);
-    
+
+    if (firstWord){
+      startTimer();
+      firstWord = false;
+    }
+
     if (keyValue == " " && letters > 0) {
       
-      console.log("To type: ", word2type.textContent, " Typed: ", input.value);
-      console.log(word2type.textContent == input.value)
       let valid = input.value.replace(" ", "") == word2type.textContent ? "valid" : "fail";
-      word2type.classList.add(valid);
+      word2type.classList.replace("current", valid);
       letters = 0;
       wordInx++;
+      showCurrent();
       input.value = "";
 
     }

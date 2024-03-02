@@ -15,17 +15,19 @@
     </h1>
 
     <div class="container">
-      <section id="words-container"></section>
+      <section id="words-container" class="words"></section>
       <div id="overlay" class="overlay visible">
         <p>start typing to begin</p>
       </div>
       <section id="input-container">
-        <input autocomplete="false" name="hidden" onfocus="displayOverlay(false)" onblur="displayOverlay(true)" type="text" id="input" />
+        <input autocomplete="false" name="hidden" onfocus="displayOverlay(false); showCurrent();" type="text" id="input" />
       </section>
 
       <section id="stats">
         <p id="wpm"><span id="wp">0</span> WPM</p>
-        <p id="accuracy"><span id="ac">100</span>% Accuracy</p>
+        <p id="accuracy"><span id="ac">100%</span> Accuracy</p>
+        <p id="time"><span id="tm">30</span>s</p>
+
       </section>
     </div>
   </body>

@@ -58,10 +58,11 @@ section {
   background-color: #222222;
   border-radius: 4px;
   padding: 10px;
-  height: 4.5em;
+  height: 6.5em;
   font-family: "Inter", sans-serif;
   overflow: hidden;
 }
+
 
 #words-container span {
   display: inline-block;
@@ -69,6 +70,11 @@ section {
   overflow: hidden;
   text-overflow: ellipsis;
   margin-right: 7px;
+}
+
+.words {
+  color: #f8f8f86b;
+
 }
 
 #input-container {
@@ -109,8 +115,12 @@ section {
 }
 
 .valid {
-  color: rgb(97, 176, 97);
+  color: #77DD76;
 }
 .fail {
-  color: rgb(199, 68, 68);
+  color: #FF6962;
 }
+.current{
+  color: 	#0476D0;
+}
+
