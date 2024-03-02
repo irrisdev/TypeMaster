@@ -1,14 +1,19 @@
-const url = "https://random-word-api.herokuapp.com/word?number=30&length=5";
-const test = () => fetch(url).then((response) => response.json()).catch((error) => console.error("Error:", error));
-
-let wordsTop, wordsWidth, wordsHeight, offsets, overlay, newSpan, words, input, root;
+const words = [
+    "apple", "banana", "table", "chair", "knife", "spoon", "glass", "plate",
+    "phone", "mouse", "house", "light", "clock", "heart", "cloud", "horse",
+    "plant", "shoe", "dress", "shirt", "pants", "socks", "watch", "radio",
+    "brush", "music", "water", "chair", "paper", "pencil", "phone", "tablet",
+    "grape", "melon", "lemon", "juice", "bread", "toast", "snack", "candy",
+    "dream", "smile", "laugh", "happy", "sleep", "night", "stars", "party"
+];
+let wordsTop, wordsWidth, wordsHeight, offsets, overlay, newSpan, input, root, inputLen, currentWord, keyCode;
 let incorrectCounter = 0;
 let correctCounter = 0;
 let counter = 0;
 let removeIndex = 0;
 
-document.addEventListener("DOMContentLoaded", async () => {
-  words = await test();
+document.addEventListener("DOMContentLoaded", () => {
+
   root = document.getElementById("words-container");
 
   offsets = root.getBoundingClientRect();
@@ -26,7 +31,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   input = document.getElementById("input");
-  input.addEventListener("keydown", keyDownEvent);
+  input.value = null;
+  currentWord = document.getElementById("word-" + removeIndex).textContent;
+  input.addEventListener("keydown", keyInput);
 
 });
 
@@ -54,31 +61,38 @@ function updateWPM() {
   wpmElement.textContent = wpm;
 }
 
+
 function keyDownEvent(e) {
+
+  keyCode = `${e.code}`;
+
   if (incorrectCounter === 0 && correctCounter == 0) {
     startTime = new Date().getTime(); // Start timer
   }
 
-  if (`${e.code}` === "Backspace" && input.value === " ") {
+  if (keyCode === "Backspace" && input.value === " ") {
     e.preventDefault(); // Prevent the user from backspacing when the input is empty (input defaulted to " ")
   }
 
-  if (`${e.code}` === "Space") {
-    const inputValue = input.value.substr(1, input.value.length - 1);
-    const word = document.getElementById("word-" + removeIndex).textContent;
 
-    if (inputValue === word) {
-      correctCounter++;
-    } else {
-      incorrectCounter++;
-    }
 
+  inputLen = input.value.length;
+  console.log(inputLen);
+  if (currentWord[inputLen-1] == keyCode){
+
+    updateAccuracy();
+    updateWPM();
+
+  }
+
+  if (keyCode === "Space" && inputLen >= currentWord.length) {
+    currentWord = document.getElementById("word-" + removeIndex).textContent;
     removeSpan(); // Remove word that has been typed
     removeIndex++;
     input.value = "";
-    updateAccuracy();
-    updateWPM();
+
   }
+
   if (removeIndex === words.length) {
     // After all words are typed
     input.disabled = true;
@@ -99,4 +113,40 @@ function updateAccuracy() {
     );
     accuracy.textContent = accuracyValue;
   }
+}
+
+
+const regex = /^[A-Za-z]$/;
+let letterCount = 0;
+let keyData;
+const allowedKeys = ["Backspace", " "];
+
+function keyInput(e){
+
+    keyData = `${e.key}`;
+    console.log("Word len: ", currentWord.length)
+    if (!allowedKeys.includes(keyData) && !regex.test(keyData) || (keyCode === "Backspace" && input.value === " ")){
+        e.preventDefault();
+        return;
+    } else if(keyData == " " && letterCount < currentWord.length){
+        e.preventDefault();
+        return;
+    }
+    
+    if (regex.test(keyData)){
+        letterCount++;
+    } else if (keyData == "Backspace" && letterCount > 0){
+        letterCount--;
+    } 
+    console.log("Input len: " ,letterCount);
+    if (keyData == " " && letterCount >= currentWord.length){
+
+        currentWord = document.getElementById("word-" + removeIndex).textContent;
+        removeSpan(); // Remove word that has been typed
+        removeIndex++;
+        input.value = "";
+        letterCount = 0;
+
+    }
+
 }
