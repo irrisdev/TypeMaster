@@ -19,10 +19,32 @@
   align-items: center;
   width: 90vw;
   height: 90vh;
-  max-width: 600px;
+  max-width: 800px;
   max-height: 500px;
   margin: auto;
   font-size: 1.2em;
+  position: relative;
+}
+
+#overlay{
+  display: flex;
+  position: fixed;
+  background-color: rgba(82, 82, 82, 0.4);
+  backdrop-filter: blur(3px);
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+}
+
+.visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.1s linear;
+}
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 0.1s, opacity 0.1s linear;
 }
 
 section {
