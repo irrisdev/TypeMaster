@@ -2,6 +2,9 @@
 
 TypeMaster is a simple typing game to improve your speed and accuracy.
 
+The website is deployed and accessible [Here](https://irrisdev.github.io/TypeMaster/).
+
+
 ## Features
 
 - **Simple Interface**: A clean design for a seamless typing experience.
