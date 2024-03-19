@@ -7,9 +7,13 @@
   padding: 0;
 }
 
-.inter-normal {
+.inter-normal, input::placeholder {
   font-family: "Share Tech Mono", monospace;
   font-weight: 400;
+}
+
+input::placeholder {
+  text-align: center;
 }
 
 .container {
@@ -74,7 +78,7 @@ section {
   background-color: #222222;
   border-radius: 4px;
   padding: 10px;
-  height: 6em;
+  height: 5.8em;
   font-family: "Inter", sans-serif;
   overflow: hidden;
 }

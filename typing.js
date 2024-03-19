@@ -4,9 +4,15 @@ const words = [
     "plant", "shoe", "dress", "shirt", "pants", "socks", "watch", "radio",
     "brush", "music", "water", "chair", "paper", "pencil", "phone", "tablet",
     "grape", "melon", "lemon", "juice", "bread", "toast", "snack", "candy",
+    "dream", "smile", "laugh", "happy", "sleep", "night", "stars", "party",
+    "apple", "banana", "table", "chair", "knife", "spoon", "glass", "plate",
+    "phone", "mouse", "house", "light", "clock", "heart", "cloud", "horse",
+    "plant", "shoe", "dress", "shirt", "pants", "socks", "watch", "radio",
+    "brush", "music", "water", "chair", "paper", "pencil", "phone", "tablet",
+    "grape", "melon", "lemon", "juice", "bread", "toast", "snack", "candy",
     "dream", "smile", "laugh", "happy", "sleep", "night", "stars", "party"
 ];
-let wordsTop, wordsWidth, wordsHeight, offsets, overlay, newSpan, input, root;
+let wordsTop, wordsWidth, wordsHeight, offsets, newSpan, input, root;
 let counter = 0;
 let wordInx = 0;
 
@@ -15,10 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   root = document.getElementById("words-container");
 
   offsets = root.getBoundingClientRect();
-  overlay = document.getElementById("overlay");
 
-  changeOverlay();
-  window.onresize = changeOverlay;
 
   for (let word of words) {
     newSpan = document.createElement("span");
@@ -37,20 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 const showCurrent = () => document.getElementById("word-" + wordInx).classList.add("current");
 
-const displayOverlay = (value) => {
-  changeOverlay();
-  value == true ? overlay.classList.replace("hidden", "visible") : overlay.classList.replace("visible", "hidden");
-} 
 
-function changeOverlay() {
-  wordsTop = offsets.top;
-  wordsWidth = offsets.width;
-  wordsHeight = offsets.height;
-
-  overlay.style.width = wordsWidth + "px";
-  overlay.style.height = wordsHeight + "px";
-  overlay.style.top = wordsTop + "px";
-}
 
 let wordsTyped = 0;
 let timeElapsed = 30;
@@ -75,22 +65,33 @@ const startTimer = async () => {
 
   }
   input.disabled = true;
-  let textOverlay = document.getElementById("overlay-text");
-  textOverlay.remove();
+
   let reloadButton = document.createElement("button");
   reloadButton.type = "button";
   reloadButton.textContent = "click to restart";
   reloadButton.onclick = () => location.reload() ;
-  overlay.append(reloadButton);
-  displayOverlay(true);
+
 
 };
 
+const deletePrev = (counter) => {
+
+  let child, indexRn; 
+
+  for (indexRn = 0; indexRn < counter; indexRn++) {  
+    child = document.getElementById("word-" + indexRn);
+    child.remove();
+  }
+
+}
 
 const incrementWord = () => {
+
   wordInx++;
   word2type = document.getElementById("word-" + wordInx);
-  
+  if ((wordInx%26)==0) {
+    deletePrev(wordInx);
+  }
 } 
 
 const regex = /^[A-Za-z]$/;
